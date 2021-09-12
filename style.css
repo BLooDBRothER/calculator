@@ -1,0 +1,111 @@
+*, *::after, *::before{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: 'lcd';
+    src: url('./Assets/font/digital-7-font/Digital7-1e1Z.ttf');
+    
+}
+
+@font-face {
+    font-family: 'lcd-italic';
+    src: url('./Assets/font/digital-7-font/Digital7Italic-RBM3.ttf');
+}
+
+:root{
+    --bg-color: #006d77;
+    --primary-color: #ffddd2;
+    --secondary-color: #e29578;
+    --accent: #83c5be;
+}
+
+html{
+    background-color: var(--bg-color);
+}
+
+body{
+    min-height: 100vh;
+    min-width: 100%;
+    background: url("./Assets/Rect\ Light.svg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: var(--primary-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    font-family: 'lcd';
+    letter-spacing: .5rem;
+}
+
+header{
+    padding: 1rem;
+    font-size: clamp(2rem, 5vw, 1rem);
+    font-family: 'lcd-italic';
+}
+
+main{
+    width: 100%;
+    height: 100%;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wrapper{
+    background-color: var(--secondary-color);
+    width:500px;
+    height: 700px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 1rem;
+}
+
+.display{
+    width: 100%;
+    height: 150px;
+    background-color: var(--primary-color);
+    border-radius: 1rem;
+}
+
+.buttons{
+    margin: 2rem 0 1rem 0;
+    width: 100%;
+    height: 80%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 1rem;
+}
+
+.button{
+    width: 100%;
+    height: 100%;
+    background-color: var(--primary-color);
+    color: var(--bg-color);
+    font-size: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.button:hover{
+    background-color: var(--accent);
+    color: white;
+
+}
+
+.button:active{
+    box-shadow: rgb(33, 35, 36) 3px 3px 6px 0px inset, rgba(24, 24, 24, 0.5) -3px -3px 6px 1px inset;
+}
