@@ -59,7 +59,7 @@ main{
 
 .wrapper{
     background-color: var(--secondary-color);
-    width:500px;
+    width: 500px;
     height: 700px;
     padding: 1rem;
     display: flex;
@@ -82,7 +82,7 @@ main{
     height: 80%;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(4, 1fr);
+    grid-template-rows: repeat(5, 1fr);
     gap: 1rem;
 }
 
@@ -92,12 +92,18 @@ main{
     background-color: var(--primary-color);
     color: var(--bg-color);
     font-size: 2.5rem;
+    font-weight: bold;
     display: flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
     border-radius: 1rem;
     cursor: pointer;
     user-select: none;
+}
+
+.button svg{
+    width: 60px;
 }
 
 .button:hover{
