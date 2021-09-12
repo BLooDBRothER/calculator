@@ -29,7 +29,6 @@ window.addEventListener("keydown", (e) => {
         expressionCnt.innerText = expressionCnt.innerText.slice(0, expressionCnt.innerText.length-1);
     }
     if((e.key>="0" && e.key<="9") || valid[e.key]){
-        addKeyPressEffects(e.key);
         expressionCnt.innerText += e.key;
         expressionCnt.scrollTop = expressionCnt.scrollHeight;
     }
