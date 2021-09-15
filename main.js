@@ -7,29 +7,49 @@ buttons.forEach(button => {
             expressionCnt.innerText = '';
             return;
         };
+        if(e.target.innerText === "CLEAR"){
+            expressionCnt.innerText = expressionCnt.innerText.slice(0, expressionCnt.innerText.length-1);
+            return;
+        }
         expressionCnt.innerText += e.target.innerText;
         expressionCnt.scrollTop = expressionCnt.scrollHeight;
     });
 });
 
 let valid = {
-    "=": "=",
-    "+": "+",
-    "-": "-",
-    "*": "*",
-    "/": "/",
-    "^": "^",
-    "(": "(",
-    ")": ")",
-    ".": "."
+    "A/C": buttons[0],
+    "Backspace": buttons[1],
+    "(": buttons[2],
+    ")": buttons[3],
+    "^": buttons[4],
+    "+": buttons[5],
+    "7": buttons[6],
+    "8": buttons[7],
+    "9": buttons[8],
+    "-": buttons[9],
+    "4": buttons[10],
+    "5": buttons[11],
+    "6": buttons[12],
+    "*": buttons[13],
+    "1": buttons[14],
+    "2": buttons[15],
+    "3": buttons[16],
+    "/": buttons[17],
+    ".": buttons[18],
+    "0": buttons[19],
+    "=": buttons[20]
+}
+
+function addActiveElement(elem){
+    elem.classList.add("active");
+    setTimeout((e) => {
+        elem.classList.remove("active");
+    }, 100);
 }
 
 window.addEventListener("keydown", (e) => {
-    if(e.key === "Backspace"){
-        expressionCnt.innerText = expressionCnt.innerText.slice(0, expressionCnt.innerText.length-1);
-    }
-    if((e.key>="0" && e.key<="9") || valid[e.key]){
-        expressionCnt.innerText += e.key;
-        expressionCnt.scrollTop = expressionCnt.scrollHeight;
+    if(valid[e.key]){
+        addActiveElement(valid[e.key])
+        valid[e.key].click();
     }
 });
