@@ -5,6 +5,7 @@ const dotRe = /\.[\d]{5,}/gi
 const regex = {
     startingCondition: /^[^\d(]/gi,
     doubleDot: /[\.]{2,}/gi,
+    ipDot: /\.[\d]*\./gi,
     wholeDigit: /[\d]{9,}/gi,
     decimalDigit: /\.[\d]{5,}/gi,
     operators: /[+\-*\/\^]{2,}/gi
@@ -27,10 +28,10 @@ buttons.forEach(button => {
             expressionCnt.innerText += e.target.innerText;
 
         }
-        if(expressionCnt.innerText.match(regex.decimalDigit) || expressionCnt.innerText.match(regex.doubleDot) || expressionCnt.innerText.match(regex.startingCondition) || expressionCnt.innerText.match(regex.wholeDigit)){
+        if(expressionCnt.innerText.match(regex["ipDot"]) || expressionCnt.innerText.match(regex.decimalDigit) || expressionCnt.innerText.match(regex.doubleDot) || expressionCnt.innerText.match(regex.startingCondition) || expressionCnt.innerText.match(regex.wholeDigit)){
             expressionCnt.innerText = expressionCnt.innerText.slice(0, (expressionCnt.innerText.length-1));
         }
-        // console.log(expressionCnt.innerText.match(regex["operators"])) 
+        console.log(expressionCnt.innerText.match(regex["ipDot"])) 
         expressionCnt.scrollTop = expressionCnt.scrollHeight;
     });
 });
