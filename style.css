@@ -21,6 +21,7 @@
     --secondary-color: #e29578;
     --accent: #83c5be;
     --danger: red;
+    --positive: yellowgreen;
 }
 
 html{
@@ -141,13 +142,14 @@ main{
     box-shadow: rgb(33, 35, 36) 3px 3px 6px 0px inset, rgba(24, 24, 24, 0.5) -3px -3px 6px 1px inset;
 }
 
-.all-clear:hover{
+.all-clear:hover, .clear:hover, .all-clear:active, .clear:active{
     background-color: var(--danger);
 }
 
-.all-clear:active{
-    background-color: var(--danger);
-    color: white;
+
+
+.equal:hover, .equal:active{
+    background-color: var(--positive);
 }
 
 .active{
