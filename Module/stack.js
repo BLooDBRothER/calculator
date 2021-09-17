@@ -15,6 +15,6 @@ export class stack{
         return this.data[this.size-1];
     }
     isEmpty(){
-        return this.size === 0 ? false : true;
+        return this.size === 0 ? true : false;
     }
 }
