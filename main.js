@@ -1,113 +1,99 @@
-import { stack } from "./Module/stack.js";
+import { evaluateExpression } from "./Module/evaluation.js";
 
 const buttons = document.querySelectorAll(".button");
 const expressionCnt = document.querySelector(".expression");
 
-const dotRe = /\.[\d]{5,}/gi
-const regex = {
-    startingCondition: /^[^\d(]/gi,
-    // doubleDot: /[\.]{2,}/gi,
-    ipDot: /\.[\d]*\./gi,
-    dotAfterOperator: /[+\-*\/\^\.][+\-*\/\^\.]/gi,
+//regex condition match
+const removeRegex = {
+    startingCondition: /^[^\d\(]/gi,
+    ipDot: /\.[\d\.]*\./gi,
     wholeDigit: /[\d]{9,}/gi,
     decimalDigit: /\.[\d]{5,}/gi,
-    operators: /[+\-*\/\^]{2,}/gi
+    paranOperator: /\([+\-*\/\^]/gi,
+    paranDigit: /[\d]\(`/gi,
+    operatorParan: /[+\-*\/\^]\)/gi,
+    paranOpenClose: /\(\)/gi,
+    paranCloseOpen: /\)[\(\d\.]/gi,
 }
 
-function evaluateTwoNumbers(no1, no2, op){
-    switch(op){
-        case '+': return no1 + no2;
-        case '-': return no1 - no2;
-        case '*': return no1 * no2;
-        case '/': return no1 / no2;
+const changeRegex = {
+    operators: /[+\-*\/\^]{2,}/gi,
+    dotAfterOperator: /\.[+\-*\/\^]/gi,
+    operatorAfterDot: /[+\-*\/\^]\./gi,
+    startingDot: /^\./gi,
+}
+
+function checkCondition(value){
+    return Object.values(removeRegex).some(re => value.match(re));
+}
+
+//Paranthesis condition check
+let count=0;
+function checkParanthesis(value){
+    console.log(count)
+    return value === ')' && count <= 0 ? true : false;
+}
+
+function reverseParanthesisCount(value){
+    let lastValue = value[value.length-1];
+    if(lastValue === '('){
+        count--;
+    }
+    else if(lastValue === ')'){
+        count++;
     }
 }
 
-function isNumber(val){
-    return ((val >= "0" && val <= "9") || val === '.') ? true : false;
+function countParanthesis(value){
+    if(value === '('){
+        count++;
+    }
+    else if(value === ')'){
+        count--;
+    }
 }
 
-function operatorPrecedence(op){
-    if(op === '+' || op === '-'){
-        return 1;
+function matchParanthesis(){
+    while(count--){
+        expressionCnt.innerText += ')';
     }
-    if(op === '*' || op === '/'){
-        return 2;
-    }
-    if(op === '^'){
-        return 3;
-    }
-    return -1;
-}
-
-function evaluateExpression(expression){
-    let i;
-    const op = new stack(),
-    no = new stack();
-    for(i=0; i<expression.length; i++){
-        if(expression[i] === '('){
-            op.push(expression[i]);
-        }
-        else if(expression[i] === ')'){
-            while(!op.isEmpty() && op.top() !== '('){
-                let no2 = no.pop();
-                let no1 = no.pop();
-                let ope = op.pop();
-                no.push(evaluateTwoNumbers(no1, no2, ope));
-            }
-            op.pop();
-        }
-        else if(isNumber(expression[i])){
-            let val='';
-            while(i<expression.length && isNumber(expression[i])){
-                val += expression[i];
-                i++;
-            }
-            no.push(parseFloat(val));
-            i--;
-        }
-        else{
-            while(!op.isEmpty() && operatorPrecedence(op.top()) >= operatorPrecedence(expression[i])){
-                let no2 = no.pop();
-                let no1 = no.pop();
-                let ope = op.pop();
-                no.push(evaluateTwoNumbers(no1, no2, ope));
-            }
-            op.push(expression[i]);
-        }
-    }
-    while(!op.isEmpty()){
-        let no2 = no.pop();
-        let no1 = no.pop();
-        let ope = op.pop();
-        no.push(evaluateTwoNumbers(no1, no2, ope));
-    }
-    console.log(no.top());
+    count=0;
 }
 
 buttons.forEach(button => {
     button.addEventListener("click", (e) => {
-        
+        if(e.target.innerText === '(' || e.target.innerText === ')'){
+            if(checkParanthesis(e.target.innerText)) return;
+            countParanthesis(e.target.innerText);
+        }
         if(e.target.innerText === "="){
-            evaluateExpression(expressionCnt.innerText);
+            matchParanthesis();
+            console.log(evaluateExpression(expressionCnt.innerText));
             return;
         }
-
         if(e.target.innerText === "A/C"){
             expressionCnt.innerText = '';
             return;
         };
         if(e.target.innerText === "CLEAR"){
+            reverseParanthesisCount(expressionCnt.innerText);
             expressionCnt.innerText = expressionCnt.innerText.slice(0, expressionCnt.innerText.length-1);
             return;
         }
         expressionCnt.innerText += e.target.innerText;
-        if(expressionCnt.innerText.match(regex.operators)){
-            expressionCnt.innerText = expressionCnt.innerText.slice(0, expressionCnt.innerText.length-2);
-            expressionCnt.innerText += e.target.innerText;
-
+        if(expressionCnt.innerText.match(changeRegex.startingDot)){
+            expressionCnt.innerText = "0.";
         }
-        if(expressionCnt.innerText.match(regex["ipDot"]) || expressionCnt.innerText.match(regex.decimalDigit) || expressionCnt.innerText.match(regex.dotAfterOperator) || expressionCnt.innerText.match(regex.startingCondition) || expressionCnt.innerText.match(regex.wholeDigit)){
+        else if(expressionCnt.innerText.match(changeRegex.dotAfterOperator)){
+            expressionCnt.innerText = expressionCnt.innerText.slice(0, (expressionCnt.innerText.length-1));
+            expressionCnt.innerText += `0${e.target.innerText}`;
+        }
+        else if(expressionCnt.innerText.match(changeRegex.operatorAfterDot) || expressionCnt.innerText.match(changeRegex.operatorAfterDot)){
+            expressionCnt.innerText = expressionCnt.innerText.slice(0, (expressionCnt.innerText.length-1));
+            expressionCnt.innerText += `0${e.target.innerText}`;
+        }
+        else if(checkCondition(expressionCnt.innerText)){
+            reverseParanthesisCount(expressionCnt.innerText);
             expressionCnt.innerText = expressionCnt.innerText.slice(0, (expressionCnt.innerText.length-1));
         }
         // console.log(expressionCnt.innerText.match(regex["dotAfterOperator"])) 
