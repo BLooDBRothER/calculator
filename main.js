@@ -7,6 +7,7 @@ const expressionCnt = document.querySelector(".expression");
 const removeRegex = {
     startingCondition: /^[^\d\(]/gi,
     ipDot: /\.[\d\.]*\./gi,
+    dotParn: /\.\(/gi,
     wholeDigit: /[\d]{9,}/gi,
     decimalDigit: /\.[\d]{5,}/gi,
     paranOperator: /\([+\-*\/\^]/gi,
