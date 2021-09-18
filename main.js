@@ -10,7 +10,7 @@ const removeRegex = {
     wholeDigit: /[\d]{9,}/gi,
     decimalDigit: /\.[\d]{5,}/gi,
     paranOperator: /\([+\-*\/\^]/gi,
-    paranDigit: /[\d]\(`/gi,
+    digitParan: /[\d]\(/gi,
     operatorParan: /[+\-*\/\^]\)/gi,
     paranOpenClose: /\(\)/gi,
     paranCloseOpen: /\)[\(\d\.]/gi,
@@ -18,8 +18,8 @@ const removeRegex = {
 
 const changeRegex = {
     operators: /[+\-*\/\^]{2,}/gi,
-    dotAfterOperator: /\.[+\-*\/\^]/gi,
-    operatorAfterDot: /[+\-*\/\^]\./gi,
+    dotAfterOperator: /\.[+\-*\/\^\)]/gi,
+    operatorAfterDot: /[+\-*\/\^\(]\./gi,
     startingDot: /^\./gi,
 }
 
@@ -96,7 +96,6 @@ buttons.forEach(button => {
             reverseParanthesisCount(expressionCnt.innerText);
             expressionCnt.innerText = expressionCnt.innerText.slice(0, (expressionCnt.innerText.length-1));
         }
-        // console.log(expressionCnt.innerText.match(regex["dotAfterOperator"])) 
         expressionCnt.scrollTop = expressionCnt.scrollHeight;
     });
 });

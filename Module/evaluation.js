@@ -5,7 +5,7 @@ function evaluateTwoNumbers(no1, no2, op){
         case '+': return no1 + no2;
         case '-': return no1 - no2;
         case '*': return no1 * no2;
-        case '/': return no1 / no2;
+        case '/': return parseFloat((no1 / no2).toFixed(4));
         case '^': return Math.pow(no1, no2);
     }
 }
