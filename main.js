@@ -73,6 +73,7 @@ buttons.forEach(button => {
         }
         if(e.target.innerText === "A/C"){
             expressionCnt.innerText = '';
+            count=0;
             return;
         };
         if(e.target.innerText === "CLEAR"){
@@ -84,11 +85,11 @@ buttons.forEach(button => {
         if(expressionCnt.innerText.match(changeRegex.startingDot)){
             expressionCnt.innerText = "0.";
         }
-        else if(expressionCnt.innerText.match(changeRegex.dotAfterOperator)){
-            expressionCnt.innerText = expressionCnt.innerText.slice(0, (expressionCnt.innerText.length-1));
-            expressionCnt.innerText += `0${e.target.innerText}`;
+        else if(expressionCnt.innerText.match(changeRegex.operators)){
+            expressionCnt.innerText = expressionCnt.innerText.slice(0, (expressionCnt.innerText.length-2));
+            expressionCnt.innerText += e.target.innerText;
         }
-        else if(expressionCnt.innerText.match(changeRegex.operatorAfterDot) || expressionCnt.innerText.match(changeRegex.operatorAfterDot)){
+        else if(expressionCnt.innerText.match(changeRegex.dotAfterOperator) || expressionCnt.innerText.match(changeRegex.operatorAfterDot)){
             expressionCnt.innerText = expressionCnt.innerText.slice(0, (expressionCnt.innerText.length-1));
             expressionCnt.innerText += `0${e.target.innerText}`;
         }

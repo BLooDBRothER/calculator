@@ -46,8 +46,11 @@ body{
 
 header{
     padding: 1rem;
-    font-size: clamp(2rem, 5vw, 1rem);
     font-family: 'lcd-italic';
+}
+
+h1{
+    font-size: clamp(.8rem, 8vw, 4rem);
 }
 
 main{
@@ -156,4 +159,10 @@ main{
     background-color: var(--accent);
     color: white;
     box-shadow: rgb(33, 35, 36) 3px 3px 6px 0px inset, rgba(24, 24, 24, 0.5) -3px -3px 6px 1px inset;
+}
+
+@media (max-width: 550px){
+    .wrapper{
+        width: 90%;
+    }
 }
