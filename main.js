@@ -2,6 +2,7 @@ import { evaluateExpression } from "./Module/evaluation.js";
 
 const buttons = document.querySelectorAll(".button");
 const expressionCnt = document.querySelector(".expression");
+const answerCnt = document.querySelector(".preview");
 
 //regex condition match
 const removeRegex = {
@@ -61,19 +62,32 @@ function matchParanthesis(){
     count=0;
 }
 
+// live Preview
+function dummyMatchParanthesis(tempExpression){
+    let temp = count;
+    while(temp--){
+        tempExpression += ')';
+    }
+    return tempExpression;
+}
+function preview(){
+    let tempExpression = expressionCnt.innerText;
+    tempExpression = dummyMatchParanthesis(tempExpression);
+    const answer = evaluateExpression(tempExpression);
+    answerCnt.innerText = `${answer ? "="+answer : answerCnt.innerText}`;
+    
+}
+
 buttons.forEach(button => {
     button.addEventListener("click", (e) => {
-        if(e.target.innerText === '(' || e.target.innerText === ')'){
-            if(checkParanthesis(e.target.innerText)) return;
-            countParanthesis(e.target.innerText);
-        }
         if(e.target.innerText === "="){
             matchParanthesis();
-            console.log(evaluateExpression(expressionCnt.innerText));
+            const answer = evaluateExpression(expressionCnt.innerText);
+            answerCnt.innerText = "="+answer;
             return;
         }
         if(e.target.innerText === "A/C"){
-            expressionCnt.innerText = '';
+            expressionCnt.innerText = answerCnt.innerText = '';
             count=0;
             return;
         };
@@ -81,6 +95,10 @@ buttons.forEach(button => {
             reverseParanthesisCount(expressionCnt.innerText);
             expressionCnt.innerText = expressionCnt.innerText.slice(0, expressionCnt.innerText.length-1);
             return;
+        }
+        if(e.target.innerText === '(' || e.target.innerText === ')'){
+            if(checkParanthesis(e.target.innerText)) return;
+            countParanthesis(e.target.innerText);
         }
         expressionCnt.innerText += e.target.innerText;
         if(expressionCnt.innerText.match(changeRegex.startingDot)){
@@ -98,6 +116,7 @@ buttons.forEach(button => {
             reverseParanthesisCount(expressionCnt.innerText);
             expressionCnt.innerText = expressionCnt.innerText.slice(0, (expressionCnt.innerText.length-1));
         }
+        preview();
         expressionCnt.scrollTop = expressionCnt.scrollHeight;
     });
 });
