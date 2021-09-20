@@ -1,13 +1,19 @@
 import { stack } from "./stack.js";
 
 function evaluateTwoNumbers(no1, no2, op){
+    let answer;
     switch(op){
-        case '+': return no1 + no2;
-        case '-': return no1 - no2;
-        case '*': return no1 * no2;
-        case '/': return parseFloat((no1 / no2).toFixed(4));
-        case '^': return Math.pow(no1, no2);
+        case '+': answer = no1 + no2;
+        break;
+        case '-': answer = no1 - no2;
+        break;
+        case '*': answer = no1 * no2;
+        break;
+        case '/': answer = no1 / no2;
+        break;
+        case '^': answer = Math.pow(no1, no2);
     }
+    return parseFloat((answer).toFixed(8));
 }
 
 function isNumber(val){

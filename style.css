@@ -26,6 +26,7 @@
 
 html{
     background-color: var(--bg-color);
+    line-height: 2rem;
 }
 
 body{
@@ -72,6 +73,20 @@ main{
     align-items: center;
     justify-content: space-between;
     border-radius: 1rem;
+    position: relative;
+}
+
+.wrapper::before{
+    content: attr(data-err);
+    font-weight: bold;
+    position: absolute;
+    bottom: 100%;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 1rem;
+    white-space: wrap;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .display{
@@ -164,5 +179,14 @@ main{
 @media (max-width: 550px){
     .wrapper{
         width: 90%;
+    }
+}
+
+@media (max-width: 360px){
+    .wrapper{
+        height: 500px;
+    }
+    .button{
+        font-size: 1.2rem;
     }
 }
