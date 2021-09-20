@@ -23,6 +23,8 @@ const changeRegex = {
     dotAfterOperator: /\.[+\-*\/\^\)]/gi,
     operatorAfterDot: /[+\-*\/\^\(]\./gi,
     startingDot: /^\./gi,
+    endCondition: /[+\-*\/\^]$/gi,
+    operatorAfteEval: /[+\-*\/\^]/gi,
 }
 
 function checkCondition(value){
@@ -71,6 +73,10 @@ function dummyMatchParanthesis(tempExpression){
     return tempExpression;
 }
 function preview(){
+    if(expressionCnt.innerText === '') {
+        answerCnt.innerText='';
+        return;
+    }
     let tempExpression = expressionCnt.innerText;
     tempExpression = dummyMatchParanthesis(tempExpression);
     const answer = evaluateExpression(tempExpression);
@@ -78,12 +84,16 @@ function preview(){
     
 }
 
+let isEvaluated = false;
 buttons.forEach(button => {
     button.addEventListener("click", (e) => {
         if(e.target.innerText === "="){
+            if(expressionCnt.innerText.match(changeRegex.endCondition) || expressionCnt.innerText === '') return;
             matchParanthesis();
             const answer = evaluateExpression(expressionCnt.innerText);
             answerCnt.innerText = "="+answer;
+            expressionCnt.innerText = '';
+            isEvaluated = true;
             return;
         }
         if(e.target.innerText === "A/C"){
@@ -94,6 +104,12 @@ buttons.forEach(button => {
         if(e.target.innerText === "CLEAR"){
             reverseParanthesisCount(expressionCnt.innerText);
             expressionCnt.innerText = expressionCnt.innerText.slice(0, expressionCnt.innerText.length-1);
+            preview();
+            return;
+        }
+        if(isEvaluated && e.target.innerText.match(changeRegex.operatorAfteEval)){
+            expressionCnt.innerText = answerCnt.innerText.slice(1, answerCnt.innerText.length) + e.target.innerText;
+            answerCnt.innerText = '';
             return;
         }
         if(e.target.innerText === '(' || e.target.innerText === ')'){
