@@ -12,6 +12,8 @@ function evaluateTwoNumbers(no1, no2, op){
         case '/': answer = no1 / no2;
         break;
         case '^': answer = Math.pow(no1, no2);
+        break;
+        case '%': answer = no1 % no2;
     }
     return parseFloat((answer).toFixed(8));
 }
@@ -27,7 +29,7 @@ function operatorPrecedence(op){
     if(op === '*' || op === '/'){
         return 2;
     }
-    if(op === '^'){
+    if(op === '^' || op === '%'){
         return 3;
     }
     return -1;

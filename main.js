@@ -12,20 +12,20 @@ const removeRegex = {
   dotParn: /\.\(/gi,
   wholeDigit: /[\d]{9,}/gi,
   decimalDigit: /\.[\d]{5,}/gi,
-  paranOperator: /\([+\-*\/\^]/gi,
+  paranOperator: /\([+\-*\/\^%]/gi,
   digitParan: /[\d]\(/gi,
-  operatorParan: /[+\-*\/\^]\)/gi,
+  operatorParan: /[+\-*\/\^%]\)/gi,
   paranOpenClose: /\(\)/gi,
   paranCloseOpen: /\)[\(\d\.]/gi,
 };
 
 const changeRegex = {
-  operators: /[+\-*\/\^]{2,}/gi,
-  dotAfterOperator: /\.[+\-*\/\^\)]/gi,
-  operatorAfterDot: /[+\-*\/\^\(]\./gi,
+  operators: /[+\-*\/\^%]{2,}/gi,
+  dotAfterOperator: /\.[+\-*\/\^\)%]/gi,
+  operatorAfterDot: /[+\-*\/\^\(%]\./gi,
   startingDot: /^\./gi,
-  endCondition: /[+\-*\/\^]$/gi,
-  operatorAfteEval: /[+\-*\/\^]/gi,
+  endCondition: /[+\-*\/\^%]$/gi,
+  operatorAfteEval: /[+\-*\/\^%]/gi,
 };
 
 function checkCondition(value) {
@@ -35,7 +35,6 @@ function checkCondition(value) {
 //Paranthesis condition check
 let count = 0;
 function checkParanthesis(value) {
-  console.log(count);
   return value === ")" && count <= 0 ? true : false;
 }
 
@@ -81,8 +80,7 @@ function preview() {
     : expressionCnt.innerText;
   tempExpression = dummyMatchParanthesis(tempExpression);
   const answer = evaluateExpression(tempExpression);
-  console.log(tempExpression, answer)
-  answerCnt.innerText = `${answer ? "=" + answer : answerCnt.innerText}`;
+  answerCnt.innerText = `${(answer === 0 || answer)? "=" + answer : answerCnt.innerText}`;
 }
 
 let isEvaluated = false;
@@ -107,6 +105,7 @@ buttons.forEach((button) => {
     if (e.target.innerText === "A/C") {
       expressionCnt.innerText = answerCnt.innerText = "";
       count = 0;
+      isEvaluated = false;
       return;
     }
     if (e.target.innerText === "CLEAR") {
@@ -116,15 +115,18 @@ buttons.forEach((button) => {
         expressionCnt.innerText.length - 1
       );
       preview();
-      return;
-    }
-    if (isEvaluated && e.target.innerText.match(changeRegex.operatorAfteEval) && !answerCnt.innerText.includes("Infinity")) {
-      let returnAnswer = answerCnt.innerText.replace(/-/, "");
-      expressionCnt.innerText = returnAnswer.slice(1, answerCnt.innerText.length) + e.target.innerText;
-      answerCnt.innerText = "";
       isEvaluated = false;
       return;
     }
+    if (isEvaluated && e.target.innerText.match(changeRegex.operatorAfteEval) && !answerCnt.innerText.includes("Infinity")) {
+      let returnAnswer = answerCnt.innerText.replace(/-/, "0-");
+      expressionCnt.innerText = returnAnswer.slice(1, returnAnswer.length) + e.target.innerText;
+      answerCnt.innerText = "";
+      preview();
+      isEvaluated = false;
+      return;
+    }
+    isEvaluated = false;
     if (e.target.innerText === "(" || e.target.innerText === ")") {
       if (checkParanthesis(e.target.innerText)) return;
       countParanthesis(e.target.innerText);
@@ -167,22 +169,23 @@ let valid = {
   ")": buttons[3],
   "^": buttons[4],
   "+": buttons[5],
-  7: buttons[6],
-  8: buttons[7],
-  9: buttons[8],
+  "7": buttons[6],
+  "8": buttons[7],
+  "9": buttons[8],
   "-": buttons[9],
-  4: buttons[10],
-  5: buttons[11],
-  6: buttons[12],
+  "4": buttons[10],
+  "5": buttons[11],
+  "6": buttons[12],
   "*": buttons[13],
-  1: buttons[14],
-  2: buttons[15],
-  3: buttons[16],
+  "1": buttons[14],
+  "2": buttons[15],
+  "3": buttons[16],
   "/": buttons[17],
   ".": buttons[18],
-  0: buttons[19],
-  "=": buttons[20],
-  Enter: buttons[20],
+  "0": buttons[19],
+  "%": buttons[20],
+  "=": buttons[21],
+  "Enter": buttons[21],
 };
 
 function addActiveElement(elem) {
