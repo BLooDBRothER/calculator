@@ -115,7 +115,6 @@ buttons.forEach((button) => {
         expressionCnt.innerText.length - 1
       );
       preview();
-      isEvaluated = false;
       return;
     }
     if (isEvaluated && e.target.innerText.match(changeRegex.operatorAfteEval) && !answerCnt.innerText.includes("Infinity")) {
@@ -126,11 +125,15 @@ buttons.forEach((button) => {
       isEvaluated = false;
       return;
     }
-    isEvaluated = false;
     if (e.target.innerText === "(" || e.target.innerText === ")") {
+      if(isEvaluated) {
+        answerCnt.innerText = '';
+        isEvaluated = false;
+      };
       if (checkParanthesis(e.target.innerText)) return;
       countParanthesis(e.target.innerText);
     }
+    isEvaluated = false;
     expressionCnt.innerText += e.target.innerText;
     if (expressionCnt.innerText.match(changeRegex.startingDot)) {
       expressionCnt.innerText = "0.";
