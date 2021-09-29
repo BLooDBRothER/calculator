@@ -10,8 +10,8 @@ const removeRegex = {
   startingCondition: /^[^\d\(]/gi,
   ipDot: /\.[\d\.]*\./gi,
   dotParn: /\.\(/gi,
-  wholeDigit: /[\d]{9,}/gi,
-  decimalDigit: /\.[\d]{5,}/gi,
+  wholeDigit: /[\d]{16,}/gi,
+  decimalDigit: /\.[\d]{9,}/gi,
   paranOperator: /\([+\-*\/\^%]/gi,
   digitParan: /[\d]\(/gi,
   operatorParan: /[+\-*\/\^%]\)/gi,
@@ -118,6 +118,11 @@ buttons.forEach((button) => {
       return;
     }
     if (isEvaluated && e.target.innerText.match(changeRegex.operatorAfteEval) && !answerCnt.innerText.includes("Infinity")) {
+      let answerWholeDigitCount = answerCnt.innerText.match(/^=[\d]{16,}/);
+      let answerDotDigitCount = answerCnt.innerText.match(/\.[\d]{9,}/);
+      if(answerWholeDigitCount || answerDotDigitCount){
+        answerCnt.innerText = "=0";
+      }
       let returnAnswer = answerCnt.innerText.replace(/-/, "0-");
       expressionCnt.innerText = returnAnswer.slice(1, returnAnswer.length) + e.target.innerText;
       answerCnt.innerText = "";
